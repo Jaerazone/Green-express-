@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- 자바스크립트로 작성 -->
+    <h1>Ajax실행</h1>
+    <button id="btnjson"> 버튼 </button>
+    <p id="printjson">  </p>
+
+    <a href="./data.txt">값 가져오기</a>
+    <p> a태그를 통해서 들고오게되면 전체를 서버에 들고오게 된다</p>
+
+    
+
+    <script>
+        
+        // HTTP 요청을 만들수 있는 객체 생성
+        
+        const req = new XMLHttpRequest();
+        console.log(req.readyState)
+        // req의 상태가 바뀔때마다 호출되는 메소드 (=callback메소드)
+        /*
+        readyState : 0 ~ 4
+        0 : open 메소드 호출 전
+        1 : open 메소드 호출 후, send 메소드 호출 전
+        2 : 보낸 요청에 대해 응답 헤더가 수신된 후
+        3 : 응답의 바디 부분이 수신 중일때
+        4 : 모든 응답이 수신되었을때
+        */
+        
+
+        req.onreadystatechange = function a() {
+            console.log(this.readyState)
+            
+            console.log(this.status) //응답 번호 확인하기
+            //모든 응답이 수신되고 응답번호가 200일때 콘솔에 출력
+            if (this.readyState==4 && this.status == 200) {
+                console.log(this.response);
+            }
+        }
+
+        // http request method(GET, POST) 가져올 url 설정
+        req.open("GET", './data.txt');
+
+        // 요청 전송
+        req.send();
+
+        // 응답확인 : response에서 확인
+        console.log(req.response);
+        // 현재 send()를 보내자마자 바로 접근하기에 안에 값이 비어있음
+        // 그러면 값이 들어왔다면 실행할수 있도록 해주어야한다 (callback)
+        // F12을 눌러 개발자도구에서 확인하면 들어와 있는 것을 볼수있다
+
+        /*
+            (공부/참고) https://expressjs.com/ko/guide/using-middleware.html
+            미들웨어 사용
+            요청 오브젝트(req), 응답오브젝트(res)
+        */
+        
+        //DOM에 이벤트를 붙이는 순서
+        // id 혹은 class 값을 찾아서 addEventListener('이벤트방식', 실행될 함수)
+        // const btn = document.querySelector('#btn'); // id값을 적어서 dom을 찾아보기로함
+
+        // const printtext = document.querySelector('#print')
+
+        // btn.addEventListener('click', function() {
+        //     const btnreq = new XMLHttpRequest();
+        //     // 바로 open과 send를 하면 가져올수 없기 때문에 onreadysat~먼저 해야함
+        //     btnreq.onreadystatechange = function a() {
+        //         if(this.readyState==4 && this.status ==200 ) {
+        //             printtext.innerHTML = this.response
+        //         }
+        //     }
+        //     btnreq.open("GET", './btndata.txt');
+        //     btnreq.send();
+        //     console.log(req.response);
+        // })
+
+        // json 데이터 들고오기
+        const btnjson = document.querySelector('#btnjson'); // id값을 적어서 dom을 찾아보기로함
+
+        const printjson = document.querySelector('#printjson')
+
+        btnjson.addEventListener('click', function() {
+            const btnjsonreq = new XMLHttpRequest();
+            // 바로 open과 send를 하면 가져올수 없기 때문에 onreadysat~먼저 해야함
+            btnjsonreq.onreadystatechange = function a() {
+                if(this.readyState==4 && this.status ==200 ) {
+                    printjson.innerHTML = this.response
+                    // json 형식으로 들고와도 string값으로 출력된다
+                    // string 형식은 객체 형식으로 출력할 수 없음
+                    console.log(typeof (this.response))
+
+                    // JSON.parse를 통해서 자바스크립트 객체로 들고올수 있다.
+                    const data = JSON.parse(this.response)
+                    console.log(typeof (data))
+
+                    //  JSON.parse를 통해서 만들어준 객체에 접근하여 속성 사용
+                    printjson.innerHTML = (data.id + data.memo);
+                    
+                }
+            }
+            btnjsonreq.open("GET", './data.json');
+            btnjsonreq.send();
+            console.log(req.response);
+        })
+
+
+    </script>
+</body>
+</html>

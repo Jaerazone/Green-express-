@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+        // 콜백함수 :  지금은 promise로 사용
+        // 이 함수를 다른 함수와 상관없이 비동기로 사용
+        function A(anum) {
+            return anum;
+        }
+        //콜백함수를 부르는 함수 (매개변수로 함수를 갖는다)
+        function B(bFunc) {
+
+            // A 함수가 실행되기 전에 반드기 log를 출력하고싶다
+            console.log('로그를 추가해서 출력할 수 있습니다 . 여기에 1초뒤 실행넣으면 1초뒤 실행?')
+            return bFunc(100);
+        }
+
+        // B(A) -> 함수A를 매개변수를 갖는 함수 B를 호출해서
+        // A(100) -> 함수A에 100이라는 매개변수를 전달
+        // return 값 100이 실행된다
+        
+        console.log(B(A))
+
+        /*
+        btnjsonreq.onreadystatechange
+        이 함수도 콜백함수
+        길어지면 사용하기 힘들기때문에  프로그레시브웹앱(p.66)
+        JSON 과 Fetch API 사용해본다 
+        */
+
+    </script>
+</body>
+</html>
